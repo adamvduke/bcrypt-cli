@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 
@@ -25,7 +26,7 @@ func (command *GenerateCommand) run(context *kingpin.ParseContext) error {
 		panic(err)
 	}
 
-	if string(password) != string(confirmation) {
+	if !bytes.Equal(password, confirmation) {
 		fmt.Println("password and confirmation don't match")
 		os.Exit(1)
 	}
