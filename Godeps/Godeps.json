@@ -1,0 +1,40 @@
+{
+	"ImportPath": "github.com/adamvduke/bcrypt-cli",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v74",
+	"Deps": [
+		{
+			"ImportPath": "github.com/alecthomas/kingpin",
+			"Comment": "v2.2.0",
+			"Rev": "92b2733684bc5f1971162349ce098fe0d070e2a9"
+		},
+		{
+			"ImportPath": "github.com/alecthomas/template",
+			"Rev": "14fd436dd20c3cc65242a9f396b61bfc8a3926fc"
+		},
+		{
+			"ImportPath": "github.com/alecthomas/template/parse",
+			"Rev": "14fd436dd20c3cc65242a9f396b61bfc8a3926fc"
+		},
+		{
+			"ImportPath": "github.com/alecthomas/units",
+			"Rev": "2efee857e7cfd4f3d0138cc3cbb1b4966962b93a"
+		},
+		{
+			"ImportPath": "github.com/howeyc/gopass",
+			"Rev": "66487b23f2880ba32e185121d2cd51a338ea069a"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/bcrypt",
+			"Rev": "b8a0f4bb4040f8d884435cff35b9691e362cf00c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "b8a0f4bb4040f8d884435cff35b9691e362cf00c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ssh/terminal",
+			"Rev": "b8a0f4bb4040f8d884435cff35b9691e362cf00c"
+		}
+	]
+}
