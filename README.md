@@ -30,15 +30,19 @@ Commands:
   cost
     Print the hashing cost used to create the given hash
 
-  generate [<flags>]
+  hash [<flags>]
     Use bcrypt to hash a password
+
+  generate [<flags>]
+    Output a random password and it's bcrypt hash
 ```
 
 ## License
 
+```
 The MIT License (MIT)
 
-Copyright (c) 2016 Adam Duke
+Copyright (c) 2018 Adam Duke
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -57,3 +61,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
