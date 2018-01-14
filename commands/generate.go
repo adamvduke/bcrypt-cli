@@ -1,45 +1,51 @@
 package commands
 
 import (
-	"bytes"
 	"fmt"
-	"os"
+	"math/rand"
+	"time"
 
 	"github.com/alecthomas/kingpin"
-	"github.com/howeyc/gopass"
 	"golang.org/x/crypto/bcrypt"
 )
 
+const DEFAULT_LENGTH = 20
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
 type GenerateCommand struct {
-	Cost int
+	Cost   int
+	Length int
 }
 
 func (command *GenerateCommand) run(context *kingpin.ParseContext) error {
-	fmt.Print("Enter password: ")
-	password, err := gopass.GetPasswdMasked()
+	if command.Length == 0 {
+		command.Length = DEFAULT_LENGTH
+	}
+	randomBytes := randomBytes(command.Length)
+	hashedPassword, err := bcrypt.GenerateFromPassword(randomBytes, command.Cost)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Print("Confirm password: ")
-	confirmation, err := gopass.GetPasswdMasked()
-	if err != nil {
-		panic(err)
-	}
-
-	if !bytes.Equal(password, confirmation) {
-		fmt.Println("password and confirmation don't match")
-		os.Exit(1)
-	}
-	hashedPassword, err := bcrypt.GenerateFromPassword(password, command.Cost)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(string(hashedPassword))
+	fmt.Println("Plaintext:", string(randomBytes))
+	fmt.Println("BCrypt:", string(hashedPassword))
 	return nil
+}
+
+func randomBytes(length int) []byte {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+	}
+	return b
 }
 
 func ConfigureGenerateCommand(app *kingpin.Application) {
 	command := &GenerateCommand{}
-	generate := app.Command("generate", "Use bcrypt to hash a password").Action(command.run)
+	generate := app.Command("generate", "Output a random password and it's bcrypt hash").Action(command.run)
 	generate.Flag("cost", "The hashing cost to use").Short('c').IntVar(&command.Cost)
+	generate.Flag("length", "The length of the random password to generate").Short('l').IntVar(&command.Length)
 }
