@@ -2,6 +2,7 @@ package commands
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 
@@ -23,17 +24,16 @@ func (command *CompareCommand) run(context *kingpin.ParseContext) error {
 	reader := bufio.NewReader(os.Stdin)
 	hashedPassword, err := reader.ReadString('\n')
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Print("Enter password: ")
 	password, err := gopass.GetPasswdMasked()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), password)
 	if err != nil {
-		fmt.Println("Password is not correct")
-		os.Exit(1)
+		return errors.New("password is not correct")
 	}
 	fmt.Println("Password is correct")
 

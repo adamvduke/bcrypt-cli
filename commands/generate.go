@@ -9,7 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-const DEFAULT_LENGTH = 20
+const defaultLength = 20
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 func init() {
@@ -23,12 +23,12 @@ type GenerateCommand struct {
 
 func (command *GenerateCommand) run(context *kingpin.ParseContext) error {
 	if command.Length == 0 {
-		command.Length = DEFAULT_LENGTH
+		command.Length = defaultLength
 	}
 	randomBytes := randomBytes(command.Length)
 	hashedPassword, err := bcrypt.GenerateFromPassword(randomBytes, command.Cost)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Println("Plaintext:", string(randomBytes))
 	fmt.Println("BCrypt:", string(hashedPassword))
