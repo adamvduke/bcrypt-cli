@@ -2,8 +2,8 @@ package commands
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
-	"os"
 
 	"github.com/alecthomas/kingpin"
 	"github.com/howeyc/gopass"
@@ -18,21 +18,20 @@ func (command *HashCommand) run(context *kingpin.ParseContext) error {
 	fmt.Print("Enter password: ")
 	password, err := gopass.GetPasswdMasked()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Print("Confirm password: ")
 	confirmation, err := gopass.GetPasswdMasked()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	if !bytes.Equal(password, confirmation) {
-		fmt.Println("password and confirmation don't match")
-		os.Exit(1)
+		return errors.New("password and confirmation don't match")
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword(password, command.Cost)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Println(string(hashedPassword))
 	return nil

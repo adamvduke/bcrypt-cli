@@ -17,11 +17,11 @@ func (command *CostCommand) run(context *kingpin.ParseContext) error {
 	reader := bufio.NewReader(os.Stdin)
 	hashedPassword, err := reader.ReadString('\n')
 	if err != nil {
-		panic(err)
+		return err
 	}
 	cost, err := bcrypt.Cost([]byte(hashedPassword))
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Println("Cost:", cost)
 	return nil
