@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/adamvduke/bcrypt-cli/commands"
-	"github.com/alecthomas/kingpin"
+	"github.com/alecthomas/kingpin/v2"
 )
 
 func main() {

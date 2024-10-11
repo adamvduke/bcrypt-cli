@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/alecthomas/kingpin"
-	"github.com/howeyc/gopass"
+	"github.com/alecthomas/kingpin/v2"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -25,8 +24,8 @@ func (command *CompareCommand) run(context *kingpin.ParseContext) error {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Print("Enter password: ")
-	password, err := gopass.GetPasswdMasked()
+	fmt.Print("Enter password:")
+	password, err := readPassword()
 	if err != nil {
 		panic(err)
 	}

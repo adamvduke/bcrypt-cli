@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/alecthomas/kingpin"
+	"github.com/alecthomas/kingpin/v2"
 	"golang.org/x/crypto/bcrypt"
 )
 
