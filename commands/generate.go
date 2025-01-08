@@ -3,7 +3,6 @@ package commands
 import (
 	"fmt"
 	"math/rand"
-	"time"
 
 	"github.com/alecthomas/kingpin/v2"
 	"golang.org/x/crypto/bcrypt"
@@ -11,10 +10,6 @@ import (
 
 const DEFAULT_LENGTH = 20
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
 
 type GenerateCommand struct {
 	Cost   int
