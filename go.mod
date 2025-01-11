@@ -1,9 +1,11 @@
 module github.com/adamvduke/bcrypt-cli
 
-go 1.23.2
+go 1.23.4
 
 require (
+	github.com/adamvduke/cli-reader v0.0.1
 	github.com/alecthomas/kingpin/v2 v2.4.0
+	github.com/google/go-cmp v0.6.0
 	golang.org/x/crypto v0.32.0
 	golang.org/x/term v0.28.0
 )

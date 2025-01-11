@@ -1,40 +1,41 @@
 package commands
 
 import (
-	"bufio"
 	"fmt"
-	"os"
+	"io"
 
 	"github.com/alecthomas/kingpin/v2"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
 type CompareCommand struct {
+	In  io.Reader
+	Out io.Writer
 }
 
-func ConfigureCompareCommand(app *kingpin.Application) {
-	command := &CompareCommand{}
-	app.Command("compare", "Compare a hashed password to a plain text password").Action(command.run)
+func ConfigureCompareCommand(app *kingpin.Application, inputReader io.Reader, outputWriter io.Writer) {
+	command := &CompareCommand{In: inputReader, Out: outputWriter}
+	app.Command("compare", "Compare a previously hashed password to a plain text password").Action(command.Run)
 }
 
-func (command *CompareCommand) run(context *kingpin.ParseContext) error {
-	fmt.Print("Enter hashed password: ")
-	reader := bufio.NewReader(os.Stdin)
-	hashedPassword, err := reader.ReadString('\n')
+func (command *CompareCommand) Run(_ *kingpin.ParseContext) error {
+	fmt.Fprintln(command.Out, "Enter previously hashed password:")
+	hashed, err := readInput(command.In)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	fmt.Print("Enter password:")
-	password, err := readPassword()
+
+	fmt.Fprintln(command.Out, "Enter password:")
+	plain, err := readSensitive(command.In)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), password)
-	if err != nil {
-		fmt.Println("Password is not correct")
-		os.Exit(1)
+
+	if err := bcrypt.CompareHashAndPassword(hashed, plain); err != nil {
+		return err
 	}
-	fmt.Println("Password is correct")
+	fmt.Fprintln(command.Out, "Password is correct")
 
 	return nil
 }

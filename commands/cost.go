@@ -1,33 +1,35 @@
 package commands
 
 import (
-	"bufio"
 	"fmt"
-	"os"
+	"io"
 
 	"github.com/alecthomas/kingpin/v2"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
 type CostCommand struct {
+	In  io.Reader
+	Out io.Writer
 }
 
-func (command *CostCommand) run(context *kingpin.ParseContext) error {
-	fmt.Print("Enter hashed password: ")
-	reader := bufio.NewReader(os.Stdin)
-	hashedPassword, err := reader.ReadString('\n')
+func ConfigureCostCommand(app *kingpin.Application, inputReader io.Reader, outputWriter io.Writer) {
+	command := &CostCommand{In: inputReader, Out: outputWriter}
+	app.Command("cost", "Print the hashing cost used to create the given hash").Action(command.Run)
+}
+
+func (command *CostCommand) Run(context *kingpin.ParseContext) error {
+	fmt.Fprintln(command.Out, "Enter previously hashed password:")
+	hash, err := readInput(command.In)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	cost, err := bcrypt.Cost([]byte(hashedPassword))
+	cost, err := bcrypt.Cost(hash)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	fmt.Println("Cost:", cost)
+	fmt.Fprintln(command.Out, "Cost:", cost)
+
 	return nil
-}
-
-func ConfigureCostCommand(app *kingpin.Application) {
-	command := &CostCommand{}
-	app.Command("cost", "Print the hashing cost used to create the given hash").Action(command.run)
 }
