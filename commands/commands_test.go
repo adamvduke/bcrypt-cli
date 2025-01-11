@@ -5,12 +5,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/adamvduke/bcrypt-cli/commands"
-
 	"github.com/google/go-cmp/cmp"
+
 	"golang.org/x/crypto/bcrypt"
 
 	clireader "github.com/adamvduke/cli-reader"
+
+	"github.com/adamvduke/bcrypt-cli/commands"
 )
 
 func TestCompare(t *testing.T) {

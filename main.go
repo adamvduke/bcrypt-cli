@@ -3,9 +3,9 @@ package main
 import (
 	"os"
 
-	"github.com/adamvduke/bcrypt-cli/commands"
-
 	"github.com/alecthomas/kingpin/v2"
+
+	"github.com/adamvduke/bcrypt-cli/commands"
 )
 
 func main() {
