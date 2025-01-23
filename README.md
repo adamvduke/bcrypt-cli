@@ -2,7 +2,7 @@
 
 Wraps golang.org/x/crypto/bcrypt in a cli
 
-## Features
+[![Go Reference](https://pkg.go.dev/badge/github.com/adamvduke/bcrypt-cli.svg)](https://pkg.go.dev/github.com/adamvduke/bcrypt-cli)
 
 ## Install
 
