@@ -6,8 +6,8 @@ Wraps golang.org/x/crypto/bcrypt in a cli
 
 ## Install
 
-- Make sure you have [Go](https://golang.org/doc/install) installed and have set your [GOPATH](https://golang.org/doc/code.html#GOPATH).
-- `go get github.com/adamvduke/bcrypt-cli`
+- Make sure you have [Go](https://golang.org/doc/install) installed.
+- `go install github.com/adamvduke/bcrypt-cli@v0.0.2`
 
 ## Usage
 
@@ -17,22 +17,24 @@ usage: bcrypt-cli [<flags>] <command> [<args> ...]
 
 Wraps golang.org/x/crypto/bcrypt in a cli
 
+
 Flags:
-  --help  Show context-sensitive help (also try --help-long and --help-man).
+  -h, --[no-]help     Show context-sensitive help (also try --help-long and --help-man).
+  -v, --[no-]version  Show application version.
 
 Commands:
-  help [<command>...]
+help [<command>...]
     Show help.
 
-  compare
-    Compare a hashed password to a plain text password
+compare
+    Compare a previously hashed password to a plain text password
 
-  cost
+cost
     Print the hashing cost used to create the given hash
 
-  hash [<flags>]
+hash [<flags>]
     Use bcrypt to hash a password
 
-  generate [<flags>]
+generate [<flags>]
     Output a random password and it's bcrypt hash
 ```
