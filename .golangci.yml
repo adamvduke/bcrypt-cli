@@ -126,6 +126,7 @@ linters-settings:
     # See https://github.com/kisielk/errcheck#excluding-functions for details.
     exclude-functions:
       - (*bytes.Buffer).WriteString # WriteString is documented as always returning a nil error
+      - crypto/rand.Read # crypto/rand.Read is documented as always filling the buffer and never returning an error
 
   gocognit:
     # Minimal code complexity to report.
