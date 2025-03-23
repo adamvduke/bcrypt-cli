@@ -2,7 +2,6 @@ package commands
 
 import (
 	"bufio"
-	"bytes"
 	"io"
 	"os"
 	"strings"
@@ -10,28 +9,20 @@ import (
 	"golang.org/x/term"
 )
 
-// If the given io.Reader represents a terminal based stdin, readSensitive will
-// read the input without displaying it on the screen. Otherwise, it reads input
+// If the given io.Reader represents a terminal based file descriptor, readSensitive
+// will read the input without displaying it on the screen. Otherwise, it reads input
 // until EOF.
-func readSensitive(input io.Reader) ([]byte, error) {
-	var (
-		data []byte
-		err  error
-	)
-	f, ok := input.(*os.File)
+func readSensitive(in io.Reader) ([]byte, error) {
+	f, ok := in.(*os.File)
 	if ok && term.IsTerminal(int(f.Fd())) {
 		// this should be the code path except when running tests
-		data, err = term.ReadPassword(int(f.Fd()))
-	} else {
-		data, err = io.ReadAll(input)
+		return term.ReadPassword(int(f.Fd()))
 	}
-	trimmed := bytes.TrimSuffix(data, []byte("\n"))
-
-	return trimmed, err
+	return readInput(in)
 }
 
-func readInput(input io.Reader) ([]byte, error) {
-	reader := bufio.NewReader(input)
+func readInput(in io.Reader) ([]byte, error) {
+	reader := bufio.NewReader(in)
 	data, err := reader.ReadString('\n')
 	if err != nil {
 		return nil, err
