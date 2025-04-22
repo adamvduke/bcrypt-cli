@@ -8,6 +8,8 @@ import (
 	"github.com/adamvduke/bcrypt-cli/commands"
 )
 
+//go:generate go tool -modfile=tools.mod golangci-lint run
+
 const (
 	version = "0.0.8"
 )
