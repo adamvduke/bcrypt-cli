@@ -4,24 +4,16 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/alecthomas/kingpin/v2"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
-type CostCommand struct {
-	In  io.Reader
-	Out io.Writer
-}
-
-func ConfigureCostCommand(app *kingpin.Application, inputReader io.Reader, outputWriter io.Writer) {
-	command := &CostCommand{In: inputReader, Out: outputWriter}
-	app.Command("cost", "Print the hashing cost used to create the given hash").Action(command.Run)
-}
-
-func (command *CostCommand) Run(context *kingpin.ParseContext) error {
-	fmt.Fprintln(command.Out, "Enter previously hashed password:")
-	hash, err := readInput(command.In)
+// Cost reads a previously hashed password from the input reader and prints the
+// cost used to create that hash.
+//
+// If the hash is invalid, an error is returned.
+func Cost(inr io.Reader, outw io.Writer) error {
+	fmt.Fprintln(outw, "Enter previously hashed password:")
+	hash, err := readInput(inr)
 	if err != nil {
 		return err
 	}
@@ -29,7 +21,7 @@ func (command *CostCommand) Run(context *kingpin.ParseContext) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprintln(command.Out, "Cost:", cost)
+	fmt.Fprintln(outw, "Cost:", cost)
 
 	return nil
 }

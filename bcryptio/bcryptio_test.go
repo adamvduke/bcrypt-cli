@@ -56,8 +56,7 @@ func TestCompare(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			reader := clireader.New(test.hashed, test.plain)
 			writer := &strings.Builder{}
-			c := &bcryptio.CompareCommand{In: reader, Out: writer}
-			if err := c.Run(nil); err != nil {
+			if err := bcryptio.Compare(reader, writer); err != nil {
 				if !errors.Is(err, test.err) {
 					t.Fatal(err)
 				}
@@ -92,8 +91,7 @@ func TestCost(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			reader := clireader.New(test.hashed)
 			writer := &strings.Builder{}
-			c := &bcryptio.CostCommand{In: reader, Out: writer}
-			if err := c.Run(nil); err != nil {
+			if err := bcryptio.Cost(reader, writer); err != nil {
 				if !errors.Is(err, test.err) {
 					t.Fatal(err)
 				}
@@ -136,8 +134,7 @@ func TestGenerate(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			writer := &strings.Builder{}
-			c := &bcryptio.GenerateCommand{Out: writer, Length: test.requestedLength, Cost: test.cost}
-			if err := c.Run(nil); err != nil {
+			if err := bcryptio.Generate(writer, true, test.requestedLength, test.cost); err != nil {
 				if !errors.Is(err, test.err) {
 					t.Fatal(err)
 				}
@@ -182,8 +179,7 @@ func TestHash(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			reader := clireader.New(test.plain, test.plain)
 			writer := &strings.Builder{}
-			c := &bcryptio.HashCommand{In: reader, Out: writer, Cost: test.cost}
-			if err := c.Run(nil); err != nil {
+			if err := bcryptio.Hash(reader, writer, test.cost); err != nil {
 				if !errors.Is(err, test.err) {
 					t.Fatal(err)
 				}

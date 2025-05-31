@@ -43,5 +43,5 @@ hash [<flags>]
     Use bcrypt to hash a password
 
 generate [<flags>]
-    Output a random password and it's bcrypt hash
+    Output a random password and its bcrypt hash
 ```

@@ -6,13 +6,12 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/alecthomas/kingpin/v2"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
 const (
-	defaultLength = 20
+	// DefaultLength is the default length of the a password.
+	DefaultLength = 20
 
 	// Bcrypt does not support lengths longer than this.
 	maxLength = 72
@@ -24,40 +23,39 @@ const (
 	extendedAlphabetLen = 94
 )
 
-type GenerateCommand struct {
-	Cost           int
-	Length         int
-	IncludeSymbols bool
-	Out            io.Writer
-}
-
-func ConfigureGenerateCommand(app *kingpin.Application, outputWriter io.Writer) {
-	command := &GenerateCommand{Out: outputWriter}
-	generate := app.Command("generate", "Output a random password and it's bcrypt hash").Action(command.Run)
-	generate.Flag("cost", "The hashing cost to use").Short('c').IntVar(&command.Cost)
-	generate.Flag("symbols", "If the generated password should contain symbols").Short('s').BoolVar(&command.IncludeSymbols)
-	generate.Flag("length", "The length of the random password to generate").Short('l').IntVar(&command.Length)
-}
-
-func (command *GenerateCommand) Run(context *kingpin.ParseContext) error {
-	if command.Length < defaultLength {
-		command.Length = defaultLength
+// Generate creates a random password of the specified length, hashes it using
+// bcrypt with the specified cost, and writes both the plaintext password and
+// the hashed password to the output writer.
+//
+// If symbols is true, the password will include symbols; otherwise, it will only
+// include alphanumeric characters.
+//
+// If the length is less than DefaultLength, it will be set to DefaultLength.
+//
+// If the length exceeds maxLength, it will be set to maxLength.
+//
+// The cost parameter determines the computational cost of hashing the password.
+//
+// If an error occurs during password generation or hashing, it will be returned.
+func Generate(outw io.Writer, symbols bool, length, cost int) error {
+	if length < DefaultLength {
+		length = DefaultLength
 	}
-	if command.Length > maxLength {
-		command.Length = maxLength
+	if length > maxLength {
+		length = maxLength
 	}
 	var data []byte
-	if command.IncludeSymbols {
-		data = randomBytesWithSymbols(command.Length)
+	if symbols {
+		data = randomBytesWithSymbols(length)
 	} else {
-		data = randomBytes(command.Length)
+		data = randomBytes(length)
 	}
-	hashedPassword, err := bcrypt.GenerateFromPassword(data, command.Cost)
+	hashedPassword, err := bcrypt.GenerateFromPassword(data, cost)
 	if err != nil {
 		return err
 	}
-	fmt.Fprintln(command.Out, "Plaintext:", string(data))
-	fmt.Fprintln(command.Out, "Bcrypt:", string(hashedPassword))
+	fmt.Fprintln(outw, "Plaintext:", string(data))
+	fmt.Fprintln(outw, "Bcrypt:", string(hashedPassword))
 
 	return nil
 }

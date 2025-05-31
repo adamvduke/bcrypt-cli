@@ -1,33 +1,29 @@
+// Package bcryptio provides minimal wrappers around the bcrypt package
+// to allow for command-line operations such as comparing passwords, checking
+// costs, generating hashes, and generating random passwords with their hashes.
 package bcryptio
 
 import (
 	"fmt"
 	"io"
 
-	"github.com/alecthomas/kingpin/v2"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
-type CompareCommand struct {
-	In  io.Reader
-	Out io.Writer
-}
-
-func ConfigureCompareCommand(app *kingpin.Application, inputReader io.Reader, outputWriter io.Writer) {
-	command := &CompareCommand{In: inputReader, Out: outputWriter}
-	app.Command("compare", "Compare a previously hashed password to a plain text password").Action(command.Run)
-}
-
-func (command *CompareCommand) Run(_ *kingpin.ParseContext) error {
-	fmt.Fprintln(command.Out, "Enter previously hashed password:")
-	hashed, err := readInput(command.In)
+// Compare reads a previously hashed password from the input reader and a plain
+// text password, then compares them using bcrypt.
+//
+// If the plain text password matches the hashed password, it prints a success
+// message; otherwise, it returns an error.
+func Compare(inr io.Reader, outw io.Writer) error {
+	fmt.Fprintln(outw, "Enter previously hashed password:")
+	hashed, err := readInput(inr)
 	if err != nil {
 		return err
 	}
 
-	fmt.Fprintln(command.Out, "Enter password:")
-	plain, err := readSensitive(command.In)
+	fmt.Fprintln(outw, "Enter password:")
+	plain, err := readSensitive(inr)
 	if err != nil {
 		return err
 	}
@@ -35,7 +31,7 @@ func (command *CompareCommand) Run(_ *kingpin.ParseContext) error {
 	if err := bcrypt.CompareHashAndPassword(hashed, plain); err != nil {
 		return err
 	}
-	fmt.Fprintln(command.Out, "Password is correct")
+	fmt.Fprintln(outw, "Password is correct")
 
 	return nil
 }
