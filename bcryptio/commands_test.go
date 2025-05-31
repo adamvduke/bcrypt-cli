@@ -1,4 +1,4 @@
-package commands_test
+package bcryptio_test
 
 import (
 	"errors"
@@ -11,7 +11,7 @@ import (
 
 	clireader "github.com/adamvduke/cli-reader"
 
-	"github.com/adamvduke/bcrypt-cli/commands"
+	"github.com/adamvduke/bcrypt-cli/bcryptio"
 )
 
 func TestCompare(t *testing.T) {
@@ -56,7 +56,7 @@ func TestCompare(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			reader := clireader.New(test.hashed, test.plain)
 			writer := &strings.Builder{}
-			c := &commands.CompareCommand{In: reader, Out: writer}
+			c := &bcryptio.CompareCommand{In: reader, Out: writer}
 			if err := c.Run(nil); err != nil {
 				if !errors.Is(err, test.err) {
 					t.Fatal(err)
@@ -92,7 +92,7 @@ func TestCost(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			reader := clireader.New(test.hashed)
 			writer := &strings.Builder{}
-			c := &commands.CostCommand{In: reader, Out: writer}
+			c := &bcryptio.CostCommand{In: reader, Out: writer}
 			if err := c.Run(nil); err != nil {
 				if !errors.Is(err, test.err) {
 					t.Fatal(err)
@@ -136,7 +136,7 @@ func TestGenerate(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			writer := &strings.Builder{}
-			c := &commands.GenerateCommand{Out: writer, Length: test.requestedLength, Cost: test.cost}
+			c := &bcryptio.GenerateCommand{Out: writer, Length: test.requestedLength, Cost: test.cost}
 			if err := c.Run(nil); err != nil {
 				if !errors.Is(err, test.err) {
 					t.Fatal(err)
@@ -182,7 +182,7 @@ func TestHash(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			reader := clireader.New(test.plain, test.plain)
 			writer := &strings.Builder{}
-			c := &commands.HashCommand{In: reader, Out: writer, Cost: test.cost}
+			c := &bcryptio.HashCommand{In: reader, Out: writer, Cost: test.cost}
 			if err := c.Run(nil); err != nil {
 				if !errors.Is(err, test.err) {
 					t.Fatal(err)
