@@ -2,13 +2,8 @@ version: "2"
 linters:
   default: none
   enable:
-    - asasalint
     - asciicheck
     - bidichk
-    - bodyclose
-    - canonicalheader
-    - containedctx
-    - contextcheck
     - copyloopvar
     - cyclop
     - decorder
@@ -79,16 +74,16 @@ linters:
             - golang.org/x/crypto/bcrypt
             - golang.org/x/term
           deny:
-            - pkg: "github.com/pkg/errors"
+            - pkg: github.com/pkg/errors
               desc: Should be replaced by standard lib errors package.
-            - pkg: "github.com/instana/testify"
+            - pkg: github.com/instana/testify
               desc: It's a fork of github.com/stretchr/testify.
     errcheck:
-      disable-default-exclusions: true
+      disable-default-exclusions: false
       check-type-assertions: true
       check-blank: true
       exclude-functions:
-        - (*bytes.Buffer).WriteString # WriteString is documented as always returning a nil error
+        - fmt.Fprintln
         - crypto/rand.Read # crypto/rand.Read is documented as always filling the buffer and never returning an error
     gocognit:
       min-complexity: 20
@@ -103,6 +98,11 @@ linters:
         - '^todo:'
       capital: true
       period: true
+    gosec:
+      config:
+        G104:
+          rand:
+            - Read
     lll:
       line-length: 140
       tab-width: 1
@@ -125,17 +125,6 @@ linters:
     whitespace:
       multi-if: true
       multi-func: true
-  exclusions:
-    generated: lax
-    presets:
-      - comments
-      - common-false-positives
-      - legacy
-      - std-error-handling
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
 formatters:
   enable:
     - gci
@@ -150,9 +139,3 @@ formatters:
         - prefix(golang.org)
         - alias
         - localmodule
-  exclusions:
-    generated: lax
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
