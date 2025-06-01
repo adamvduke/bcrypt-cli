@@ -12,7 +12,7 @@ import (
 //go:generate go tool -modfile=tools.mod golangci-lint run --fix
 
 const (
-	version = "0.0.9"
+	version = "0.0.10"
 )
 
 func main() {

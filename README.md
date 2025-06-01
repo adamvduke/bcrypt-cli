@@ -14,7 +14,7 @@ Wraps golang.org/x/crypto/bcrypt in a cli
  
 ### Build From Source
 - Make sure you have [Go](https://golang.org/doc/install) installed.
-- `go install github.com/adamvduke/bcrypt-cli@v0.0.9`
+- `go install github.com/adamvduke/bcrypt-cli@v0.0.10`
 
 ## Usage
 
