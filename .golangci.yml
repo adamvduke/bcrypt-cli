@@ -69,8 +69,8 @@ linters:
             - $gostd
             - github.com/adamvduke/bcrypt-cli
             - github.com/adamvduke/cli-reader
-            - github.com/alecthomas/kingpin/v2
             - github.com/google/go-cmp/cmp
+            - github.com/spf13/cobra
             - golang.org/x/crypto/bcrypt
             - golang.org/x/term
           deny:

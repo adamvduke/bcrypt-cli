@@ -20,28 +20,24 @@ Wraps golang.org/x/crypto/bcrypt in a cli
 
 ```
 $ bcrypt-cli --help
-usage: bcrypt-cli [<flags>] <command> [<args> ...]
-
 Wraps golang.org/x/crypto/bcrypt in a cli
 
+A simple CLI for hashing and comparing passwords using bcrypt.
+
+Usage:
+  bcrypt-cli [command]
+
+Available Commands:
+  compare     Compare a previously hashed password to a plain text password
+  cost        Use bcrypt to hash a password
+  generate    Output a random password and its bcrypt hash
+  hash        Use bcrypt to hash a password
+  help        Help about any command
+  version     Print the version number of bcrypt-cli
 
 Flags:
-  -h, --[no-]help     Show context-sensitive help (also try --help-long and --help-man).
-  -v, --[no-]version  Show application version.
+  -h, --help      help for bcrypt-cli
+  -v, --version   version for bcrypt-cli
 
-Commands:
-help [<command>...]
-    Show help.
-
-compare
-    Compare a previously hashed password to a plain text password
-
-cost
-    Print the hashing cost used to create the given hash
-
-hash [<flags>]
-    Use bcrypt to hash a password
-
-generate [<flags>]
-    Output a random password and its bcrypt hash
+Use "bcrypt-cli [command] --help" for more information about a command.
 ```
